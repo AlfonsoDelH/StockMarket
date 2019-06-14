@@ -1,0 +1,45 @@
+Sub StockSummary2016()
+
+        Range("k1").Value = "Ticker"
+        Range("l1").Value = "Yearly Change"
+        Range("m1").Value = "Percent Change"
+        Range("n1").Value = "Ticker Stock Volume"
+        
+        Dim SummaryRow As Integer
+        SummaryRow = 2
+        lastrow = Cells(Rows.Count, 1).End(xlUp).Row
+        Dim TotalVolume As Double
+        TotalVolume = 0
+        
+        For i = 2 To lastrow
+            If Cells(i, 2).Value = "20160101" Then
+                openprice = Cells(i, 3).Value
+            End If
+
+            If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+                ticker = Cells(i, 1).Value
+                TotalVolume = TotalVolume + Cells(i, 7).Value
+                closeprice = Cells(i, 6).Value
+                pricechange = closeprice - openprice
+                perchange = pricechange / openprice
+                Range("K" & SummaryRow).Value = ticker
+                Range("n" & SummaryRow).Value = TotalVolume
+                Range("l" & SummaryRow).Value = pricechange
+                Range("m" & SummaryRow).Value = perchange
+                SummaryRow = SummaryRow + 1
+                TotalVolume = 0
+            Else
+                TotalVolume = TotalVolume + Cells(i, 7).Value
+                
+            End If
+                Cells(i, 13).Style = "Percent"
+        
+            If Cells(i, 12) >= 0 Then
+            Cells(i, 12).Interior.ColorIndex = 43
+            Else
+            Cells(i, 12).Interior.ColorIndex = 3
+            End If
+        
+        Next i
+    
+End Sub
